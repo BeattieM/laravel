@@ -1,4 +1,12 @@
-Laravel
-=======
+Description
+===========
 
-Installs and configures Laravel and additional modules.
+Requirements
+============
+
+Attributes
+==========
+
+Usage
+=====
+
