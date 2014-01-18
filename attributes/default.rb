@@ -1,5 +1,5 @@
 #
-# Cookbook Name:: php-mcrypt
+# Cookbook Name:: laravel
 #
 # Copyright 2014, Michael Beattie
 #
@@ -15,3 +15,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+default['laravel']['uses_admin'] = true
+
+default['laravel']['db']['name'] = "laraveldb"
+default['laravel']['db']['user'] = "root"
+default['laravel']['db']['pass'] = ""
+default['laravel']['db']['host'] = "localhost"

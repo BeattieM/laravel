@@ -1,0 +1,6 @@
+<VirtualHost *:80>
+	DocumentRoot <%= "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}" %>/public
+	ServerName <%= "dev.#{node['laravel']['project_name']}.com" %>
+	CustomLog /var/log/apache2/<%= "dev.#{node['laravel']['project_name']}.com-access_log combined" %>
+	ErrorLog /var/log/apache2/<%= "dev.#{node['laravel']['project_name']}.com-error_log" %>
+</VirtualHost>

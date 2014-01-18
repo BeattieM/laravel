@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: laravel
-# Recipe:: default
+# Recipe:: server
 #
 # Copyright 2014, Michael Beattie
 #
@@ -17,23 +17,15 @@
 # limitations under the License.
 #
 
-missing_attrs = %w[
-	project_name
-  project_root
-].select { |attr| node['laravel'][attr].nil? }.map { |attr| %Q{node['laravel']['#{attr}']} }
-
-unless missing_attrs.empty?
-  Chef::Application.fatal! "You must set #{missing_attrs.join(', ')}." \
-  " For more information, see https://github.com/BeattieM/laravel#attributes"
+execute "Prepare Apache and Virt Host" do
+	action :run
+	command "sudo a2enmod rewrite"
 end
 
-include_recipe "php"
-
-unless File.exists?("#{node['php']['ext_conf_dir']}/mcrypt.ini")
-	include_recipe "php-mcrypt"
+web_app "laravel" do
+  template "laravel.conf.erb"
+  docroot "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}/public"
+  server_name node['fqdn']
+  server_aliases node['fqdn']
+  enable true
 end
-
-include_recipe "mysql"
-include_recipe "apache2"
-include_recipe "composer"
-include_recipe "laravel::laravel"

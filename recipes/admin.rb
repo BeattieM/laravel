@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: laravel
-# Recipe:: default
+# Recipe:: admin
 #
 # Copyright 2014, Michael Beattie
 #
@@ -17,23 +17,17 @@
 # limitations under the License.
 #
 
-missing_attrs = %w[
-	project_name
-  project_root
-].select { |attr| node['laravel'][attr].nil? }.map { |attr| %Q{node['laravel']['#{attr}']} }
+project_dir = "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
 
-unless missing_attrs.empty?
-  Chef::Application.fatal! "You must set #{missing_attrs.join(', ')}." \
-  " For more information, see https://github.com/BeattieM/laravel#attributes"
+
+execute "Publish Admin Config" do
+	action :run
+	command "php artisan config:publish frozennode/administrator"
+	not_if {::File.exists?("#{project_dir}/app/config/packages/frozennode/administrator/administrator.php")}
 end
 
-include_recipe "php"
 
-unless File.exists?("#{node['php']['ext_conf_dir']}/mcrypt.ini")
-	include_recipe "php-mcrypt"
+execute "Publish Admin Assets" do
+	action :run
+	command "php artisan asset:publish frozennode/administrator"
 end
-
-include_recipe "mysql"
-include_recipe "apache2"
-include_recipe "composer"
-include_recipe "laravel::laravel"

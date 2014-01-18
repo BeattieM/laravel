@@ -5,6 +5,4 @@ description      "Installs and configures Laravel and additional modules"
 
 version          "0.1"
 
-supports 'ubuntu','debian'
-
 recipe 'laravel', 'Installs and configures Laravel and additional modules.'
