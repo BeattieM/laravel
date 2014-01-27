@@ -16,8 +16,6 @@
 # limitations under the License.
 #
 
-default['laravel']['uses_admin'] = true
-
 default['laravel']['db']['name'] = "laraveldb"
 default['laravel']['db']['user'] = "root"
 default['laravel']['db']['pass'] = ""

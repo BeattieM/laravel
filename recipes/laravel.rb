@@ -46,11 +46,17 @@ end
 
 
 template "#{project_dir}/composer.json" do
+   variables(
+    :recipes => node['recipes']
+  )
 	mode "0644"
 end
 
 
 template "#{project_dir}/app/config/app.php" do
+  variables(
+    :recipes => node['recipes']
+  )
 	mode "0644"
 end
 
@@ -59,11 +65,6 @@ execute "Install Composer Packages" do
 	action :run
 	command "cd #{project_dir}; composer update"
 end
-
-
-# if node['laravel']['uses_admin']
-# 	include_recipe "laravel::admin"
-# end
 
 
 include_recipe "laravel::database"

@@ -107,7 +107,7 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
-		<% if node['laravel']['uses_admin'] === true %>
+		<% if @recipes.include?('laravel::admin') %>
 		<%= '\'Frozennode\Administrator\AdministratorServiceProvider\',' %>
 		<% end %>
 	),

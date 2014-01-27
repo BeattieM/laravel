@@ -19,15 +19,27 @@
 
 project_dir = "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
 
+execute "Make Administrator Directory" do
+	action :run
+	command "cd #{project_dir}/app/config; sudo mkdir administrator; cd administrator; sudo mkdir settings"
+end
+
+template "#{project_dir}/app/config/administrator/settings/site.php" do
+	mode "0644"
+end
 
 execute "Publish Admin Config" do
 	action :run
-	command "php artisan config:publish frozennode/administrator"
+	command "cd #{project_dir}; php artisan config:publish frozennode/administrator"
 	not_if {::File.exists?("#{project_dir}/app/config/packages/frozennode/administrator/administrator.php")}
 end
 
 
 execute "Publish Admin Assets" do
 	action :run
-	command "php artisan asset:publish frozennode/administrator"
+	command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
+end
+
+template "#{project_dir}/app/config/packages/frozennode/administrator/administrator.php" do
+	mode "0644"
 end
