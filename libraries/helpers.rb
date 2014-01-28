@@ -1,5 +1,6 @@
 #
 # Cookbook Name:: laravel
+# Library:: helpers
 #
 # Copyright 2014, Michael Beattie
 #
@@ -16,9 +17,24 @@
 # limitations under the License.
 #
 
-default['laravel']['project_root'] = "/srv"
+module Laravel
+  module Helpers
 
-default['laravel']['db']['name'] = "laraveldb"
-default['laravel']['db']['host'] = "localhost"
-default['laravel']['db']['user'] = "root"
-default['laravel']['db']['pass'] = "#{node['mysql']['server_root_password']}"
+    # Define the project path
+    def project_path
+      "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
+    end
+
+
+    # Check if this a development machine
+    def is_local_host?(host)
+      if host == 'localhost' || host == '127.0.0.1' || host == '::1'
+        true
+      else
+        require 'socket'
+        require 'resolv'
+        Socket.ip_address_list.map { |a| a.ip_address }.include? Resolv.getaddress host
+      end
+    end
+  end
+end

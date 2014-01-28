@@ -1,7 +1,3 @@
-# STILL NEED TO GENERATE ENCRYPTION KEY
-
-
-
 #
 # Cookbook Name:: laravel
 # Recipe:: laravel
@@ -21,14 +17,21 @@
 # limitations under the License.
 #
 
-project_dir = "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
+::Chef::Recipe.send(:include, Laravel::Helpers)
 
+
+# Notify the user if they are creating a new project
+# We do this because creating a new project takes a while
 unless ::File.directory?("#{project_dir}")
 	log "Creating #{node['laravel']['project_name']} ..."
 end
 
+
+# Create a new project if it does not already exist
 execute "Create Laravel Project" do
   action :run
+
+  # Check if composer has been installed globally
   if node['composer']['install_globally']
   	command "composer create-project laravel/laravel #{project_dir} --prefer-dist"
   else
@@ -39,31 +42,45 @@ execute "Create Laravel Project" do
 end
 
 
+# Laravel requires this directory to have write access by the web server
 execute "Chmod app/storage directory" do
   action :nothing
-  command "sudo chmod -R 777 #{project_dir}/app/storage"
+  command "sudo chmod -R 755 #{project_dir}/app/storage"
 end
 
 
-template "#{project_dir}/composer.json" do
-   variables(
-    :recipes => node['recipes']
-  )
-	mode "0644"
+# Create the composer config files if they do not already exist
+# Generates a new Laravel encryption key
+# This is assumed to be during new project creation
+unless ::File.exist?("#{project_dir}/composer.json")
+  template "#{project_dir}/composer.json" do
+     variables(
+      :recipes => node['recipes']
+    )
+    mode "0644"
+  end
+
+
+  template "#{project_dir}/app/config/app.php" do
+    variables(
+      :recipes => node['recipes']
+    )
+    mode "0644"
+  end
+
+
+  # Generate Laravel encryption key
+  execute "Generate Laravel Encryption Key" do
+    action :run
+    command "cd #{project_dir}; php artisan key:generate"
+  end
 end
 
 
-template "#{project_dir}/app/config/app.php" do
-  variables(
-    :recipes => node['recipes']
-  )
-	mode "0644"
-end
-
-
+# Update composer dependencies
 execute "Install Composer Packages" do
-	action :run
-	command "cd #{project_dir}; composer update"
+  action :run
+  command "cd #{project_dir}; composer update"
 end
 
 

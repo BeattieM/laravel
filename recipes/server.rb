@@ -17,11 +17,10 @@
 # limitations under the License.
 #
 
-execute "Prepare Apache and Virt Host" do
-	action :run
-	command "sudo a2enmod rewrite"
-end
+::Chef::Recipe.send(:include, Laravel::Helpers)
 
+
+# Prepare Apache and Virt Host
 web_app "laravel" do
   template "laravel.conf.erb"
   docroot "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}/public"

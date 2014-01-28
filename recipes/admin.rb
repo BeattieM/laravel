@@ -17,29 +17,47 @@
 # limitations under the License.
 #
 
-project_dir = "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
-
-execute "Make Administrator Directory" do
-	action :run
-	command "cd #{project_dir}/app/config; sudo mkdir administrator; cd administrator; sudo mkdir settings"
-end
-
-template "#{project_dir}/app/config/administrator/settings/site.php" do
-	mode "0644"
-end
-
-execute "Publish Admin Config" do
-	action :run
-	command "cd #{project_dir}; php artisan config:publish frozennode/administrator"
-	not_if {::File.exists?("#{project_dir}/app/config/packages/frozennode/administrator/administrator.php")}
-end
+::Chef::Recipe.send(:include, Laravel::Helpers)
 
 
-execute "Publish Admin Assets" do
-	action :run
-	command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
-end
+# Publish admin assets if the admin directory already exists 
+if ::File.directory?("#{project_dir}/app/config/administrator")
+	execute "Publish Admin Assets" do
+		action :run
+		command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
+	end
 
-template "#{project_dir}/app/config/packages/frozennode/administrator/administrator.php" do
-	mode "0644"
+
+# Create the admin directory structure
+else
+	execute "Make Administrator Directory" do
+		action :run
+		command "cd #{project_dir}/app/config; sudo mkdir administrator; cd administrator; sudo mkdir settings"
+	end
+
+
+	# Add admin site settings config
+	template "#{project_dir}/app/config/administrator/settings/site.php" do
+		mode "0644"
+	end
+
+
+	# Publish Frozennode admin config
+	execute "Publish Admin Config" do
+		action :run
+		command "cd #{project_dir}; php artisan config:publish frozennode/administrator"
+	end
+
+
+	# Publish Frozennode admin assets
+	execute "Publish Admin Assets" do
+		action :run
+		command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
+	end
+
+
+	# Set base admin menu configuration
+	template "#{project_dir}/app/config/packages/frozennode/administrator/administrator.php" do
+		mode "0644"
+	end
 end
