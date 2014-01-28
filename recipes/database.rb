@@ -38,14 +38,14 @@ end
 
 # Create the database config file if one does not already exist
 # This is assumed to be during new project creation
-unless ::File.exist?("#{project_dir}/app/config/database.php")
-  template "#{project_dir}/app/config/database.php" do
+unless ::File.exist?("#{project_path}/app/config/database.php")
+  template "#{project_path}/app/config/database.php" do
     mode "0644"
   end
 
   # Create the migration table in the database
   execute "Run Initial Migration" do
     action :run
-    command "cd #{project_dir}; php artisan migrate"
+    command "cd #{project_path}; php artisan migrate"
   end
 end

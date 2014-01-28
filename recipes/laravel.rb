@@ -22,7 +22,7 @@
 
 # Notify the user if they are creating a new project
 # We do this because creating a new project takes a while
-unless ::File.directory?("#{project_dir}")
+unless ::File.directory?("#{project_path}")
 	log "Creating #{node['laravel']['project_name']} ..."
 end
 
@@ -33,11 +33,11 @@ execute "Create Laravel Project" do
 
   # Check if composer has been installed globally
   if node['composer']['install_globally']
-  	command "composer create-project laravel/laravel #{project_dir} --prefer-dist"
+  	command "composer create-project laravel/laravel #{project_path} --prefer-dist"
   else
-  	command "php composer create-project laravel/laravel #{project_dir} --prefer-dist"
+  	command "php composer create-project laravel/laravel #{project_path} --prefer-dist"
   end
-  not_if {::File.directory?("#{project_dir}")}
+  not_if {::File.directory?("#{project_path}")}
   notifies :run, "execute[Chmod app/storage directory]"
 end
 
@@ -45,15 +45,15 @@ end
 # Laravel requires this directory to have write access by the web server
 execute "Chmod app/storage directory" do
   action :nothing
-  command "sudo chmod -R 755 #{project_dir}/app/storage"
+  command "sudo chmod -R 755 #{project_path}/app/storage"
 end
 
 
 # Create the composer config files if they do not already exist
 # Generates a new Laravel encryption key
 # This is assumed to be during new project creation
-unless ::File.exist?("#{project_dir}/composer.json")
-  template "#{project_dir}/composer.json" do
+unless ::File.exist?("#{project_path}/composer.json")
+  template "#{project_path}/composer.json" do
      variables(
       :recipes => node['recipes']
     )
@@ -61,7 +61,7 @@ unless ::File.exist?("#{project_dir}/composer.json")
   end
 
 
-  template "#{project_dir}/app/config/app.php" do
+  template "#{project_path}/app/config/app.php" do
     variables(
       :recipes => node['recipes']
     )
@@ -72,7 +72,7 @@ unless ::File.exist?("#{project_dir}/composer.json")
   # Generate Laravel encryption key
   execute "Generate Laravel Encryption Key" do
     action :run
-    command "cd #{project_dir}; php artisan key:generate"
+    command "cd #{project_path}; php artisan key:generate"
   end
 end
 
@@ -80,7 +80,7 @@ end
 # Update composer dependencies
 execute "Install Composer Packages" do
   action :run
-  command "cd #{project_dir}; composer update"
+  command "cd #{project_path}; composer update"
 end
 
 

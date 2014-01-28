@@ -21,10 +21,10 @@
 
 
 # Publish admin assets if the admin directory already exists 
-if ::File.directory?("#{project_dir}/app/config/administrator")
+if ::File.directory?("#{project_path}/app/config/administrator")
 	execute "Publish Admin Assets" do
 		action :run
-		command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
+		command "cd #{project_path}; php artisan asset:publish frozennode/administrator"
 	end
 
 
@@ -32,12 +32,12 @@ if ::File.directory?("#{project_dir}/app/config/administrator")
 else
 	execute "Make Administrator Directory" do
 		action :run
-		command "cd #{project_dir}/app/config; sudo mkdir administrator; cd administrator; sudo mkdir settings"
+		command "cd #{project_path}/app/config; sudo mkdir administrator; cd administrator; sudo mkdir settings"
 	end
 
 
 	# Add admin site settings config
-	template "#{project_dir}/app/config/administrator/settings/site.php" do
+	template "#{project_path}/app/config/administrator/settings/site.php" do
 		mode "0644"
 	end
 
@@ -45,19 +45,19 @@ else
 	# Publish Frozennode admin config
 	execute "Publish Admin Config" do
 		action :run
-		command "cd #{project_dir}; php artisan config:publish frozennode/administrator"
+		command "cd #{project_path}; php artisan config:publish frozennode/administrator"
 	end
 
 
 	# Publish Frozennode admin assets
 	execute "Publish Admin Assets" do
 		action :run
-		command "cd #{project_dir}; php artisan asset:publish frozennode/administrator"
+		command "cd #{project_path}; php artisan asset:publish frozennode/administrator"
 	end
 
 
 	# Set base admin menu configuration
-	template "#{project_dir}/app/config/packages/frozennode/administrator/administrator.php" do
+	template "#{project_path}/app/config/packages/frozennode/administrator/administrator.php" do
 		mode "0644"
 	end
 end
