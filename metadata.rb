@@ -6,7 +6,8 @@ description      "Installs and configures Laravel and additional modules"
 
 version          "0.1"
 
-supports 'ubuntu','debian'
+supports 'ubuntu'
+supports 'debian'
 
 depends "php"
 depends "apache2"
