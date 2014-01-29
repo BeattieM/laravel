@@ -4,11 +4,10 @@
 #
 # Copyright 2014, Michael Beattie
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# Licensed under the MIT License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     http://opensource.org/licenses/MIT
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +17,13 @@
 #
 
 ::Chef::Recipe.send(:include, Laravel::Helpers)
+path = project_path
 
 
 # Notify the user if they are creating a new project
 # We do this because creating a new project takes a while
-unless ::File.directory?("#{project_path}")
-	log "Creating #{node['laravel']['project_name']} ..."
+unless ::File.directory?("#{path}")
+  log "Creating #{node['laravel']['project_name']} ..."
 end
 
 
@@ -33,11 +33,11 @@ execute "Create Laravel Project" do
 
   # Check if composer has been installed globally
   if node['composer']['install_globally']
-  	command "composer create-project laravel/laravel #{project_path} --prefer-dist"
+    command "composer create-project laravel/laravel #{path} --prefer-dist"
   else
-  	command "php composer create-project laravel/laravel #{project_path} --prefer-dist"
+    command "php composer create-project laravel/laravel #{path} --prefer-dist"
   end
-  not_if {::File.directory?("#{project_path}")}
+  not_if {::File.directory?("#{path}")}
   notifies :run, "execute[Chmod app/storage directory]"
 end
 
@@ -45,42 +45,48 @@ end
 # Laravel requires this directory to have write access by the web server
 execute "Chmod app/storage directory" do
   action :nothing
-  command "sudo chmod -R 755 #{project_path}/app/storage"
+  command "sudo chmod -R 777 #{path}/app/storage"
 end
 
 
+# Check if the composer config files already exist
+if ::File.exist?("#{path}/composer.json")
+
+  # Update composer dependencies
+  execute "Install Composer Packages" do
+    action :run
+    command "cd #{path}; composer update"
+  end
+
 # Create the composer config files if they do not already exist
 # Generates a new Laravel encryption key
-# This is assumed to be during new project creation
-unless ::File.exist?("#{project_path}/composer.json")
-  template "#{project_path}/composer.json" do
+# This is assumed to be during new project creation  
+else
+  template "#{path}/composer.json" do
      variables(
       :recipes => node['recipes']
     )
     mode "0644"
   end
 
-
-  template "#{project_path}/app/config/app.php" do
+  template "#{path}/app/config/app.php" do
     variables(
       :recipes => node['recipes']
     )
     mode "0644"
   end
 
+  # Update composer dependencies
+  execute "Install Composer Packages" do
+    action :run
+    command "cd #{path}; composer update"
+  end
 
   # Generate Laravel encryption key
   execute "Generate Laravel Encryption Key" do
     action :run
-    command "cd #{project_path}; php artisan key:generate"
+    command "cd #{path}; php artisan key:generate"
   end
-end
-
-
-# Update composer dependencies
-execute "Install Composer Packages" do
-  action :run
-  command "cd #{project_path}; composer update"
 end
 
 

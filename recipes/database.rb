@@ -4,11 +4,10 @@
 #
 # Copyright 2014, Michael Beattie
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# Licensed under the MIT License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     http://opensource.org/licenses/MIT
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -22,6 +21,7 @@ db = node['laravel']['db']
 
 include_recipe "mysql::client"
 ::Chef::Recipe.send(:include, Laravel::Helpers)
+path = project_path
 
 
 # Check if this is a development machine
@@ -38,14 +38,14 @@ end
 
 # Create the database config file if one does not already exist
 # This is assumed to be during new project creation
-unless ::File.exist?("#{project_path}/app/config/database.php")
-  template "#{project_path}/app/config/database.php" do
+unless ::File.exist?("#{path}/app/config/database.php")
+  template "#{path}/app/config/database.php" do
     mode "0644"
   end
 
   # Create the migration table in the database
   execute "Run Initial Migration" do
     action :run
-    command "cd #{project_path}; php artisan migrate"
+    command "cd #{path}; php artisan migrate"
   end
 end

@@ -1,6 +1,7 @@
+name             "laravel"
 maintainer       "Michael Beattie"
 maintainer_email "beattiem@knights.ucf.edu"
-license          "Apache 2.0"
+license          "MIT license"
 description      "Installs and configures Laravel and additional modules"
 
 version          "0.1"
@@ -13,7 +14,7 @@ depends "mysql"
 depends "composer"
 
 recipe 'laravel', 'Installs and configures Laravel and additional modules.'
-recipe 'laravel::admin', 'Installs and configures Frozennode Admin module.'
+recipe 'laravel::admin', "Installs and configures FrozenNode's Admin module."
 
 attribute "laravel/db/host",
   :display_name => "Laravel MySQL host",

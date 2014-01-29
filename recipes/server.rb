@@ -4,11 +4,10 @@
 #
 # Copyright 2014, Michael Beattie
 #
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
+# Licensed under the MIT License.
 # You may obtain a copy of the License at
 #
-#     http://www.apache.org/licenses/LICENSE-2.0
+#     http://opensource.org/licenses/MIT
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -18,12 +17,13 @@
 #
 
 ::Chef::Recipe.send(:include, Laravel::Helpers)
+path = project_path
 
 
 # Prepare Apache and Virt Host
 web_app "laravel" do
   template "laravel.conf.erb"
-  docroot "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}/public"
+  docroot "#{path}/public"
   server_name node['fqdn']
   server_aliases node['fqdn']
   enable true
