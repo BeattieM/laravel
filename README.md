@@ -1,6 +1,6 @@
 Description
 ===========
-The Chef Laravel cookbook installs and configures Laravel 4 according to the instructions at (http://laravel.com).  
+The Chef Laravel cookbook installs and configures Laravel 4 according to the instructions at http://laravel.com.  
 It includes: 
 * [Jefferey Way's Laravel 4 Generators](https://github.com/JeffreyWay/Laravel-4-Generators)
 * [Frozennodes's Laravel Admin](https://github.com/FrozenNode/Laravel-Administrator)
