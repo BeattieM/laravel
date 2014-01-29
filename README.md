@@ -1,6 +1,6 @@
 Description
 ===========
-The Chef Laravel cookbook installs and configures Laravel 4 according to the instructions at (http://laravel.com).
+The Chef Laravel cookbook installs and configures Laravel 4 according to the instructions at (http://laravel.com).  
 It includes: 
 * [Jefferey Way's Laravel 4 Generators](https://github.com/JeffreyWay/Laravel-4-Generators)
 * [Frozennodes's Laravel Admin](https://github.com/FrozenNode/Laravel-Administrator)
@@ -18,22 +18,22 @@ Cookbooks
 
 Attributes
 ==========
-`node ['laravel']['db']['host']` - Host for the Laravel MySQL database
+`node ['laravel']['db']['host']` - Host for the Laravel MySQL database  
   :default => "localhost"
 
-`node ['laravel']['db']['user']` - Laravel will connect to MySQL using this user
+`node ['laravel']['db']['user']` - Laravel will connect to MySQL using this user  
   :default => "root"
 
-`node ['laravel']['db']['pass']` - Password for the Laravel MySQL user
+`node ['laravel']['db']['pass']` - Password for the Laravel MySQL user  
   :default => "MySQL::server_root_password"
 
-`node ['laravel']['db']['name']` - Laravel will connect to this MySQL database
+`node ['laravel']['db']['name']` - Laravel will connect to this MySQL database  
   :default => "wordpressuser"
 
-`node ['laravel']['project_root']` - Laravel project root directory
+`node ['laravel']['project_root']` - Laravel project root directory  
   :default => "/srv"
 
-`node ['laravel']['project_name']` - Laravel project name
+`node ['laravel']['project_name']` - Laravel project name  
   :default => "user defined requirement"
 
 Recipes
