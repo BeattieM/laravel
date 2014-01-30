@@ -20,6 +20,14 @@
 path = project_path
 
 
+# Check if composer has been installed globally
+if node['composer']['install_globally']
+  composer_command = "composer"
+else
+  composer_command = "php composer"
+end
+
+
 # Notify the user if they are creating a new project
 # We do this because creating a new project takes a while
 unless ::File.directory?("#{path}")
@@ -30,13 +38,7 @@ end
 # Create a new project if it does not already exist
 execute "Create Laravel Project" do
   action :run
-
-  # Check if composer has been installed globally
-  if node['composer']['install_globally']
-    command "composer create-project laravel/laravel #{path} --prefer-dist"
-  else
-    command "php composer create-project laravel/laravel #{path} --prefer-dist"
-  end
+  command "#{composer_command} create-project laravel/laravel #{path} --prefer-dist"
   not_if {::File.directory?("#{path}")}
   notifies :run, "execute[Chmod app/storage directory]"
 end
@@ -55,7 +57,7 @@ if ::File.exist?("#{path}/composer.json")
   # Update composer dependencies
   execute "Install Composer Packages" do
     action :run
-    command "cd #{path}; composer update"
+    command "cd #{path}; #{composer_command} update"
   end
 
 # Create the composer config files if they do not already exist
@@ -79,7 +81,7 @@ else
   # Update composer dependencies
   execute "Install Composer Packages" do
     action :run
-    command "cd #{path}; composer update"
+    command "cd #{path}; #{composer_command} update"
   end
 
   # Generate Laravel encryption key
