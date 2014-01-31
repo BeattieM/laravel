@@ -31,7 +31,7 @@ if is_local_host? db['host']
   # Create the database is it does not already exist
   execute "Create Laravel Database If Not Exists" do
     action :run
-    command "mysql --user='#{db['user']}' --password='#{db['password']}' --execute='CREATE DATABASE IF NOT EXISTS #{db['name']}'"
+    command "mysql --user='#{db['user']}' --password='#{db['pass']}' --execute='CREATE DATABASE IF NOT EXISTS #{db['name']}'"
   end
 end
 
