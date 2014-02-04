@@ -28,7 +28,7 @@ Attributes
   :default => "MySQL::server_root_password"
 
 `node ['laravel']['db']['name']` - Laravel will connect to this MySQL database  
-  :default => "wordpressuser"
+  :default => "laraveldb"
 
 `node ['laravel']['project_root']` - Laravel project root directory  
   :default => "/srv"

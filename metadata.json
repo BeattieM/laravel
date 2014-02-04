@@ -1,0 +1,121 @@
+{
+  "name": "laravel",
+  "description": "Installs and configures Laravel and additional modules",
+  "long_description": "",
+  "maintainer": "Michael Beattie",
+  "maintainer_email": "beattiem@knights.ucf.edu",
+  "license": "MIT license",
+  "platforms": {
+    "ubuntu": ">= 0.0.0",
+    "debian": ">= 0.0.0"
+  },
+  "dependencies": {
+    "php": ">= 0.0.0",
+    "apache2": ">= 0.0.0",
+    "mysql": ">= 0.0.0",
+    "composer": ">= 0.0.0"
+  },
+  "recommendations": {
+  },
+  "suggestions": {
+  },
+  "conflicting": {
+  },
+  "providing": {
+  },
+  "replacing": {
+  },
+  "attributes": {
+    "laravel/db/host": {
+      "display_name": "Laravel MySQL host",
+      "description": "Host for the Laravel MySQL database.",
+      "default": "localhost",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "laravel/db/user": {
+      "display_name": "Laravel MySQL user",
+      "description": "Laravel will connect to MySQL using this user.",
+      "default": "root",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "laravel/db/pass": {
+      "display_name": "Laravel MySQL password",
+      "description": "Password for the Laravel MySQL user.",
+      "default": "MySQL::server_root_password",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "laravel/db/name": {
+      "display_name": "Laravel MySQL database",
+      "description": "Laravel will connect to this MySQL database.",
+      "default": "laraveldb",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "laravel/project_root": {
+      "display_name": "Laravel project root directory",
+      "description": "Laravel project root directory.",
+      "default": "/srv",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    },
+    "laravel/project_name": {
+      "display_name": "Laravel project name",
+      "description": "Laravel project name.",
+      "default": "user defined requirement",
+      "choice": [
+
+      ],
+      "calculated": false,
+      "type": "string",
+      "required": "optional",
+      "recipes": [
+
+      ]
+    }
+  },
+  "groupings": {
+  },
+  "recipes": {
+    "laravel": "Installs and configures Laravel and additional modules.",
+    "laravel::admin": "Installs and configures FrozenNode's Admin module."
+  },
+  "version": "1.0.0"
+}

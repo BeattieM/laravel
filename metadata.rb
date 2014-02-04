@@ -4,7 +4,7 @@ maintainer_email "beattiem@knights.ucf.edu"
 license          "MIT license"
 description      "Installs and configures Laravel and additional modules"
 
-version          "0.1"
+version          "1.0.0"
 
 supports 'ubuntu'
 supports 'debian'
@@ -35,7 +35,7 @@ attribute "laravel/db/pass",
 attribute "laravel/db/name",
   :display_name => "Laravel MySQL database",
   :description => "Laravel will connect to this MySQL database.",
-  :default => "wordpressuser"
+  :default => "laraveldb"
 
 attribute "laravel/project_root",
   :display_name => "Laravel project root directory",
