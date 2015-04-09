@@ -21,7 +21,7 @@ module Laravel
 
     # Define the project path
     def project_path
-      "#{node['laravel']['project_root']}/#{node['laravel']['project_name']}"
+      "#{node['laravel']['project_root']}"
     end
 
 
