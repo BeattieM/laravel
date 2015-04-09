@@ -57,7 +57,7 @@ if ::File.exist?("#{path}/composer.json")
   # Update composer dependencies
   execute "Install Composer Packages" do
     action :run
-    command "cd #{path}; #{composer_command} update"
+    command "cd #{path}; #{composer_command} install"
   end
 
 # Create the composer config files if they do not already exist
