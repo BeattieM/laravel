@@ -11,7 +11,7 @@ supports 'debian'
 
 depends "php"
 depends "apache2"
-depends "mysql"
+depends "mysql", "4.1.2"
 depends "composer"
 
 recipe 'laravel', 'Installs and configures Laravel and additional modules.'
