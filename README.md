@@ -1,3 +1,6 @@
+THIS REPOSITORY IS NO LONGER MAINTAINED. PLEASE GO TO https://github.com/501st-alpha1/laravel-chef FOR THE MOST UP-TO-DATE CODE
+===
+
 Description
 ===========
 The Chef Laravel cookbook installs and configures Laravel 4 according to the instructions at http://laravel.com.  
