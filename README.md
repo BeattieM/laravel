@@ -16,6 +16,7 @@ Cookbooks
 =========
 * MySQL
 * PHP
+* PHP-Mcrypt
 * Apache2
 * Composer
 
